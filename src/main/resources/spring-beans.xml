@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+          http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://www.springframework.org/schema/context 
+          http://www.springframework.org/schema/context/spring-context.xsd
+          http://www.springframework.org/schema/tx 
+          http://www.springframework.org/schema/tx/spring-tx.xsd
+          http://www.springframework.org/schema/util 
+          http://www.springframework.org/schema/util/spring-util.xsd">
+    
+    <context:property-placeholder location="classpath:config/jdbc.properties"/>
+    <context:component-scan base-package="com.paralun.app" />
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    
+    <bean id="datasource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="${jdbc.driver}" />
+        <property name="url" value="${jdbc.url}" />
+        <property name="username" value="${jdbc.username}" />
+        <property name="password" value="${jdbc.password}" />
+        <property name="maxTotal" value="80" />
+        <property name="maxWaitMillis" value="40000" />
+        <property name="maxIdle" value="20" />
+    </bean>
+    
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="datasource" />
+        <property name="packagesToScan">
+            <util:list>
+                <value>com.paralun.app.model</value>
+            </util:list>
+        </property>
+        <property name="hibernateProperties">
+            <util:properties>
+                <prop key="hibernate.dialect">${jdbc.dialect}</prop>
+                <prop key="hibernate.hbm2ddl.auto">${jdbc.hbm2ddl}</prop>
+                <prop key="hibernate.show_sql">${jdbc.show_sql}</prop>
+                <prop key="hibernate.format_sql">${jdbc.format_sql}</prop>
+            </util:properties>
+        </property>
+    </bean>
+    
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
+
+</beans>
