@@ -7,8 +7,6 @@ package com.paralun.app.model;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -19,29 +17,31 @@ import javax.persistence.Table;
 public class PenjualanDetail implements Serializable {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "detail _id", nullable = false)
-    private Integer id;
+    private PenjualanPK noJual = new PenjualanPK();
+    
     @Column(name = "jml_jual")
     private Integer jmlJual;
+    
     @Column(name = "harga_jual")
     private Integer hargaJual;
+    
     @ManyToOne
-    @JoinColumn(name = "kode_brg")
+    @JoinColumn(name = "kode_brg", referencedColumnName = "kode_brg", nullable = false, insertable = false, updatable = false)
     private Barang barang;
-    @ManyToOne
-    @JoinColumn(name = "no_pnjl")
+    
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "no_jual", referencedColumnName = "no_jual", nullable = false, insertable = false, updatable = false)
     private Penjualan penjualan;
 
     public PenjualanDetail() {
     }
 
-    public Integer getId() {
-        return id;
+    public PenjualanPK getNoJual() {
+        return noJual;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setNoJual(PenjualanPK noJual) {
+        this.noJual = noJual;
     }
 
     public Integer getJmlJual() {
@@ -66,6 +66,7 @@ public class PenjualanDetail implements Serializable {
 
     public void setBarang(Barang barang) {
         this.barang = barang;
+        this.noJual.setKodeBrg(barang.getKodeBrg());
     }
 
     public Penjualan getPenjualan() {
@@ -74,6 +75,7 @@ public class PenjualanDetail implements Serializable {
 
     public void setPenjualan(Penjualan penjualan) {
         this.penjualan = penjualan;
+        this.noJual.setNoJual(penjualan.getNoJual());
     }
     
 }

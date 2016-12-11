@@ -25,45 +25,48 @@ import javax.persistence.TemporalType;
 public class Penjualan implements Serializable {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "no_pnjl", nullable = false)
-    private Integer noPnjl;
+    @Column(name = "no_jual", nullable = false)
+    private String noJual;
+    
     @Temporal(TemporalType.DATE)
-    @Column(name = "tgl_pnjl")
-    private Date tglPnjl;
-    @Column(name = "total")
-    private Integer total;
+    @Column(name = "tgl_jual")
+    private Date tglJual;
+    
+    @Column(name = "total_jual")
+    private Integer totalJual;
+    
     @ManyToOne
-    @JoinColumn(name = "kode_plg")
+    @JoinColumn(name = "kode_plg", referencedColumnName = "kode_plg")
     private Pelanggan pelanggan;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "penjualan")
     private List<PenjualanDetail> penjualanDetails;
 
     public Penjualan() {
     }
 
-    public Integer getNoPnjl() {
-        return noPnjl;
+    public String getNoJual() {
+        return noJual;
     }
 
-    public void setNoPnjl(Integer noPnjl) {
-        this.noPnjl = noPnjl;
+    public void setNoJual(String noJual) {
+        this.noJual = noJual;
     }
 
-    public Date getTglPnjl() {
-        return tglPnjl;
+    public Date getTglJual() {
+        return tglJual;
     }
 
-    public void setTglPnjl(Date tglPnjl) {
-        this.tglPnjl = tglPnjl;
+    public void setTglJual(Date tglJual) {
+        this.tglJual = tglJual;
     }
 
-    public Integer getTotal() {
-        return total;
+    public Integer getTotalJual() {
+        return totalJual;
     }
 
-    public void setTotal(Integer total) {
-        this.total = total;
+    public void setTotalJual(Integer totalJual) {
+        this.totalJual = totalJual;
     }
 
     public Pelanggan getPelanggan() {

@@ -36,7 +36,7 @@ public class BarangDaoImpl implements BarangDao{
     @Override
     public List<Barang> getBarangs() {
         return sessionFactory.getCurrentSession()
-                .createQuery("fromBarang")
+                .createQuery("from Barang")
                 .list();
     }
 }

@@ -22,18 +22,24 @@ public class Pelanggan implements Serializable {
     @Id
     @Column(name = "kode_plg", nullable = false, length = 6)
     private String kodePlg;
+    
     @Column(name = "nama_plg", length = 50)
     private String namaPlg;
+    
     @Column(name = "alamat_plg", length = 100)
     private String alamatPlg;
+    
     @Column(name = "tlp_plg", length = 12)
     private String teleponPlg;
+    
     @Temporal(TemporalType.DATE)
     @Column(name = "create_date")
     private Date createDate;
+    
     @Temporal(TemporalType.DATE)
     @Column(name = "update_date")
     private Date updateDate;
+    
     @OneToMany(mappedBy = "pelanggan")
     private List<Penjualan> penjualans;
 

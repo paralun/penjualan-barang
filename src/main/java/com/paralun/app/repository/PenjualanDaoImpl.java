@@ -29,7 +29,7 @@ public class PenjualanDaoImpl implements PenjualanDao {
     @Override
     public Penjualan getPenjualan(int kode) {
         return (Penjualan) sessionFactory.getCurrentSession()
-                .createQuery("from Penjualan where noPnjl = :kode")
+                .createQuery("from Penjualan where noJual = :kode")
                 .setParameter("kode", kode)
                 .uniqueResult();
     }

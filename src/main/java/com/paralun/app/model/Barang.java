@@ -23,20 +23,27 @@ public class Barang implements Serializable{
     @Id
     @Column(name = "kode_brg", nullable = false, length = 6)
     private String kodeBrg;
+    
     @Column(name = "nama_Brg", length = 50)
     private String namaBrg;
+    
     @Column(name = "satusn_brg", length = 10)
     private String satuanBrg;
+    
     @Column(name = "harga_brg")
     private Integer hargaBrg;
+    
     @Column(name = "stok_brg")
     private Integer stokBrg;
+    
     @Temporal(TemporalType.DATE)
     @Column(name = "create_date")
     private Date createDate;
+    
     @Temporal(TemporalType.DATE)
     @Column(name = "update_date")
     private Date updateDate;
+    
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "barang")
     private List<PenjualanDetail> penjualanDetails;
 
