@@ -27,10 +27,10 @@ public class PenjualanDaoImpl implements PenjualanDao {
     }
 
     @Override
-    public Penjualan getPenjualan(int kode) {
+    public Penjualan getPenjualan(String nomor) {
         return (Penjualan) sessionFactory.getCurrentSession()
-                .createQuery("from Penjualan where noJual = :kode")
-                .setParameter("kode", kode)
+                .createQuery("select p from Penjualan p left join fetch p.penjualanDetails where p.noJual = :nomor")
+                .setParameter("nomor", nomor)
                 .uniqueResult();
     }
 

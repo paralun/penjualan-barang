@@ -37,8 +37,8 @@ public class PenjualanServiceImpl implements PenjualanService {
     }
 
     @Override
-    public Penjualan getPenjualan(int kode) {
-        return penjualanDao.getPenjualan(kode);
+    public Penjualan getPenjualan(String nomor) {
+        return penjualanDao.getPenjualan(nomor);
     }
 
     @Override

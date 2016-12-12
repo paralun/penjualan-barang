@@ -11,6 +11,6 @@ public interface PenjualanDao {
     
     public void saveOrUpdate(Penjualan penjualan);
     public void delete(Penjualan penjualan);
-    public Penjualan getPenjualan(int kode);
+    public Penjualan getPenjualan(String nomor);
     public List<Penjualan> getPenjualans();
 }
