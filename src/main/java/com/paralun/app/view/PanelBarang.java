@@ -4,16 +4,25 @@
  */
 package com.paralun.app.view;
 
+import com.paralun.app.model.Barang;
+import com.paralun.app.service.MasterService;
 import com.paralun.app.view.tabelmodel.BarangTabelModel;
+import java.util.Date;
+import java.util.List;
+import javax.swing.JOptionPane;
+import org.springframework.context.ApplicationContext;
 
 public class PanelBarang extends javax.swing.JPanel {
-    
-    private BarangTabelModel tabelModel;
 
-    public PanelBarang() {
+    private BarangTabelModel tabelModel;
+    private final MasterService service;
+
+    public PanelBarang(ApplicationContext context) {
         initComponents();
+        service = (MasterService) context.getBean("masterService");
         tabelModel = new BarangTabelModel();
         tabelBarang.setModel(tabelModel);
+        loadData();
     }
 
     @SuppressWarnings("unchecked")
@@ -62,6 +71,10 @@ public class PanelBarang extends javax.swing.JPanel {
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         jLabel6.setText("Stok Barang :");
 
+        textHargaBrg.setText("0");
+
+        textStokBrg.setText("0");
+
         tabelBarang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -84,6 +97,11 @@ public class PanelBarang extends javax.swing.JPanel {
         buttonUpdate.setText("Update");
 
         buttonSave.setText("Save");
+        buttonSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonSaveActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -162,6 +180,58 @@ public class PanelBarang extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void buttonSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonSaveActionPerformed
+        // TODO add your handling code here:
+        save();
+    }//GEN-LAST:event_buttonSaveActionPerformed
+
+    private void loadData() {
+        List<Barang> list = service.getBarangs();
+        tabelModel = new BarangTabelModel();
+        tabelModel.setList(list);
+        tabelBarang.setModel(tabelModel);
+    }
+
+    private boolean validation() {
+        return textKodeBrg.getText().trim().isEmpty()
+                || textNamaBrg.getText().trim().isEmpty()
+                || textSatuanBrg.getText().trim().isEmpty()
+                || textHargaBrg.getText().trim().isEmpty()
+                || textStokBrg.getText().trim().isEmpty();
+    }
+
+    private void save() {
+        if (validation()) {
+            JOptionPane.showMessageDialog(this, "Data harus di isi semua");
+        } else {
+            Barang barang = new Barang();
+            barang.setKodeBrg(textKodeBrg.getText());
+            barang.setNamaBrg(textNamaBrg.getText());
+            barang.setSatuanBrg(textSatuanBrg.getText());
+            barang.setHargaBrg(Integer.parseInt(textHargaBrg.getText()));
+            barang.setStokBrg(Integer.parseInt(textStokBrg.getText()));
+            barang.setCreateDate(new Date());
+            barang.setUpdateDate(new Date());
+
+            try {
+                service.saveOrUpdate(barang);
+                JOptionPane.showMessageDialog(this, "Data berhasil di simpan");
+                clear();
+                loadData();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Data gagal di simpan");
+            }
+
+        }
+    }
+
+    private void clear() {
+        textKodeBrg.setText("");
+        textNamaBrg.setText("");
+        textSatuanBrg.setText("");
+        textHargaBrg.setText("0");
+        textStokBrg.setText("0");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buttonClear;

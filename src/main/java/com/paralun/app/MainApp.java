@@ -4,12 +4,11 @@
  */
 package com.paralun.app;
 
-import com.paralun.app.model.Barang;
-import com.paralun.app.model.Penjualan;
-import com.paralun.app.model.PenjualanDetail;
-import com.paralun.app.service.MasterService;
-import com.paralun.app.service.PenjualanService;
-import java.util.List;
+import com.paralun.app.view.FormMain;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -18,7 +17,20 @@ public class MainApp {
     public static void main(String[] args) {
         
         ApplicationContext ctx = new ClassPathXmlApplicationContext("spring-beans.xml");
-        MasterService service = (MasterService) ctx.getBean("masterService");
-        PenjualanService ps = (PenjualanService) ctx.getBean("penjualanService");
+        
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
+            Logger.getLogger(MainApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            
+            @Override
+            public void run() {
+                FormMain formMain = new FormMain(ctx);
+                formMain.setVisible(true);
+            }
+        });
     }
 }

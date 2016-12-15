@@ -63,6 +63,8 @@ public class BarangTabelModel extends AbstractTableModel {
                 return null;
         }
     }
-    
-    
+
+    public Barang get(int index) {
+        return list.get(index);
+    }
 }
