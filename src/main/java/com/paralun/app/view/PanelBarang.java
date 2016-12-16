@@ -10,18 +10,22 @@ import com.paralun.app.view.tabelmodel.BarangTabelModel;
 import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import org.springframework.context.ApplicationContext;
 
-public class PanelBarang extends javax.swing.JPanel {
+public class PanelBarang extends javax.swing.JPanel implements ListSelectionListener {
 
     private BarangTabelModel tabelModel;
     private final MasterService service;
+    private Barang barang;
+    private FormMain main;
 
-    public PanelBarang(ApplicationContext context) {
+    public PanelBarang(FormMain main, ApplicationContext context) {
         initComponents();
+        this.main = main;
         service = (MasterService) context.getBean("masterService");
-        tabelModel = new BarangTabelModel();
-        tabelBarang.setModel(tabelModel);
+        tabelBarang.getSelectionModel().addListSelectionListener(this);
         loadData();
     }
 
@@ -89,12 +93,32 @@ public class PanelBarang extends javax.swing.JPanel {
         jScrollPane1.setViewportView(tabelBarang);
 
         buttonClose.setText("Close");
+        buttonClose.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonCloseActionPerformed(evt);
+            }
+        });
 
         buttonClear.setText("Clear");
+        buttonClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonClearActionPerformed(evt);
+            }
+        });
 
         buttonDelete.setText("Delete");
+        buttonDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonDeleteActionPerformed(evt);
+            }
+        });
 
         buttonUpdate.setText("Update");
+        buttonUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buttonUpdateActionPerformed(evt);
+            }
+        });
 
         buttonSave.setText("Save");
         buttonSave.addActionListener(new java.awt.event.ActionListener() {
@@ -168,8 +192,8 @@ public class PanelBarang extends javax.swing.JPanel {
                     .addComponent(jLabel6)
                     .addComponent(textStokBrg, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(buttonClose)
                     .addComponent(buttonClear)
@@ -184,6 +208,26 @@ public class PanelBarang extends javax.swing.JPanel {
         // TODO add your handling code here:
         save();
     }//GEN-LAST:event_buttonSaveActionPerformed
+
+    private void buttonUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonUpdateActionPerformed
+        // TODO add your handling code here:
+        update();
+    }//GEN-LAST:event_buttonUpdateActionPerformed
+
+    private void buttonDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonDeleteActionPerformed
+        // TODO add your handling code here:
+        delete();
+    }//GEN-LAST:event_buttonDeleteActionPerformed
+
+    private void buttonClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonClearActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_buttonClearActionPerformed
+
+    private void buttonCloseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buttonCloseActionPerformed
+        // TODO add your handling code here:
+        main.addPanelUtama();
+    }//GEN-LAST:event_buttonCloseActionPerformed
 
     private void loadData() {
         List<Barang> list = service.getBarangs();
@@ -204,7 +248,7 @@ public class PanelBarang extends javax.swing.JPanel {
         if (validation()) {
             JOptionPane.showMessageDialog(this, "Data harus di isi semua");
         } else {
-            Barang barang = new Barang();
+            barang = new Barang();
             barang.setKodeBrg(textKodeBrg.getText());
             barang.setNamaBrg(textNamaBrg.getText());
             barang.setSatuanBrg(textSatuanBrg.getText());
@@ -221,7 +265,47 @@ public class PanelBarang extends javax.swing.JPanel {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Data gagal di simpan");
             }
+        }
+    }
 
+    private void update() {
+        if (tabelBarang.getSelectedRow() != -1) {
+            if (validation()) {
+                JOptionPane.showMessageDialog(this, "Data harus di isi semua");
+            } else {
+                barang.setKodeBrg(textKodeBrg.getText());
+                barang.setNamaBrg(textNamaBrg.getText());
+                barang.setSatuanBrg(textSatuanBrg.getText());
+                barang.setHargaBrg(Integer.parseInt(textHargaBrg.getText()));
+                barang.setStokBrg(Integer.parseInt(textStokBrg.getText()));
+                barang.setUpdateDate(new Date());
+
+                try {
+                    service.saveOrUpdate(barang);
+                    JOptionPane.showMessageDialog(this, "Data berhasil di Update");
+                    clear();
+                    loadData();
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, "Data gagal di Update");
+                }
+            }
+        }
+    }
+    
+    private void delete() {
+        if(tabelBarang.getSelectedRow() != -1) {
+            try {
+                if(JOptionPane.showConfirmDialog(this, 
+                        "Anda yakin Ingin Menghapus Data Barang", "Konfirmasi", 
+                        JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION){
+                    service.delete(barang);
+                    clear();
+                    loadData();
+                }
+                
+            }catch(Exception ex){
+                JOptionPane.showMessageDialog(this, "Gagal Delete Data");
+            }
         }
     }
 
@@ -231,6 +315,8 @@ public class PanelBarang extends javax.swing.JPanel {
         textSatuanBrg.setText("");
         textHargaBrg.setText("0");
         textStokBrg.setText("0");
+        tabelBarang.clearSelection();
+        barang = null;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -253,4 +339,17 @@ public class PanelBarang extends javax.swing.JPanel {
     private javax.swing.JTextField textSatuanBrg;
     private javax.swing.JTextField textStokBrg;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void valueChanged(ListSelectionEvent e) {
+        try {
+            barang = tabelModel.get(tabelBarang.convertRowIndexToModel(tabelBarang.getSelectedRow()));
+            textKodeBrg.setText(barang.getKodeBrg());
+            textNamaBrg.setText(barang.getNamaBrg());
+            textSatuanBrg.setText(barang.getSatuanBrg());
+            textHargaBrg.setText(barang.getHargaBrg() + "");
+            textStokBrg.setText(barang.getStokBrg() + "");
+        } catch (ArrayIndexOutOfBoundsException aioobe) {
+        }
+    }
 }

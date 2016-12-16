@@ -14,6 +14,7 @@ public class FormMain extends javax.swing.JFrame {
 
     public FormMain(ApplicationContext context) {
         initComponents();
+        addPanelUtama();
         this.context = context;
     }
 
@@ -112,7 +113,7 @@ public class FormMain extends javax.swing.JFrame {
 
     private void menuBarangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuBarangActionPerformed
         
-        PanelBarang panelBarang = new PanelBarang(context);
+        PanelBarang panelBarang = new PanelBarang(this, context);
         addPanel(panelBarang);
         
     }//GEN-LAST:event_menuBarangActionPerformed
@@ -128,6 +129,11 @@ public class FormMain extends javax.swing.JFrame {
         panelMain.updateUI();
         panelMain.add(panel);
         panel.setVisible(true);
+    }
+    
+    public void addPanelUtama(){
+        PanelUtama utama = new PanelUtama();
+        addPanel(utama);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
