@@ -32,7 +32,7 @@ public class FormMain extends javax.swing.JFrame {
         menuBarang = new javax.swing.JMenuItem();
         menuPelanggan = new javax.swing.JMenuItem();
         jMenu3 = new javax.swing.JMenu();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        menuPenjualan = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -86,8 +86,13 @@ public class FormMain extends javax.swing.JFrame {
 
         jMenu3.setText("Transaksi");
 
-        jMenuItem3.setText("Penjualan");
-        jMenu3.add(jMenuItem3);
+        menuPenjualan.setText("Penjualan");
+        menuPenjualan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuPenjualanActionPerformed(evt);
+            }
+        });
+        jMenu3.add(menuPenjualan);
 
         jMenuBar1.add(jMenu3);
 
@@ -124,6 +129,12 @@ public class FormMain extends javax.swing.JFrame {
         addPanel(panelPelanggan);
     }//GEN-LAST:event_menuPelangganActionPerformed
 
+    private void menuPenjualanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPenjualanActionPerformed
+        // TODO add your handling code here:
+        PanelPenjualan panelPenjualan = new PanelPenjualan(this, context);
+        addPanel(panelPenjualan);
+    }//GEN-LAST:event_menuPenjualanActionPerformed
+
     public void addPanel(JPanel panel) {
         panelMain.removeAll();
         panelMain.updateUI();
@@ -142,11 +153,11 @@ public class FormMain extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JMenuItem menuBarang;
     private javax.swing.JMenuItem menuPelanggan;
+    private javax.swing.JMenuItem menuPenjualan;
     private javax.swing.JPanel panelMain;
     // End of variables declaration//GEN-END:variables
 }

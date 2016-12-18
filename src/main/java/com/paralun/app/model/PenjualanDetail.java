@@ -25,6 +25,9 @@ public class PenjualanDetail implements Serializable {
     @Column(name = "harga_jual")
     private Integer hargaJual;
     
+    @Column(name = "sub_total")
+    private Integer total;
+    
     @ManyToOne
     @JoinColumn(name = "kode_brg", referencedColumnName = "kode_brg", nullable = false, insertable = false, updatable = false)
     private Barang barang;
@@ -60,13 +63,21 @@ public class PenjualanDetail implements Serializable {
         this.hargaJual = hargaJual;
     }
 
+    public Integer getTotal() {
+        return total;
+    }
+
+    public void setTotal(Integer total) {
+        this.total = total;
+    }
+
     public Barang getBarang() {
         return barang;
     }
 
     public void setBarang(Barang barang) {
         this.barang = barang;
-        this.noJual.setKodeBrg(barang.getKodeBrg());
+        //this.noJual.setKodeBrg(barang.getKodeBrg());
     }
 
     public Penjualan getPenjualan() {
@@ -75,7 +86,7 @@ public class PenjualanDetail implements Serializable {
 
     public void setPenjualan(Penjualan penjualan) {
         this.penjualan = penjualan;
-        this.noJual.setNoJual(penjualan.getNoJual());
+        //this.noJual.setNoJual(penjualan.getNoJual());
     }
     
 }
